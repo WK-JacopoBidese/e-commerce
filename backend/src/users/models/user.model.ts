@@ -35,11 +35,10 @@ export async function findOneEmail(email: string): Promise<any> {
 export async function create(userData: IUser): Promise<any> {
     const hashedPassword = await hashPassword(userData.password);
     const newUser: IUser = {
-        username: userData.username,
-        email: userData.email,
+        ...userData,
         password: hashedPassword
     };
-
+    
     try {
         const res = await User.create(newUser)
         console.log(`Utente salvato con successo!`);

@@ -15,28 +15,30 @@ export default class ProductRoutes extends CommonRoutesConfig {
     configureRoutes(): Application {
         this.app.route(this.apiPrefix + "/:id")
             .all(
-                authMiddleware.verifyToken
+                authMiddleware.verifyToken,
+                mongodbValidationMiddleware.isMongoId
             )
             .get(
-                mongodbValidationMiddleware.isMongoId,
                 productValidationMiddleware.productExists,
                 Products.findOne
             )
             .put(
-                mongodbValidationMiddleware.isMongoId,
                 productValidationMiddleware.productExists,
                 body("code").isString().optional({ values: "null" }),
                 body("description").isString().optional({ values: "null" }),
                 body("um").isString().isLength({ max: 2 }).optional({ values: "null" }),
+                body("qta").isNumeric().optional({ values: "null" }),
                 body("price").isNumeric().optional({ values: "null" }),
                 body("discontinued").isBoolean().optional({ values: "null" }),
+                body("image").isURL().optional({ values: "null" }),
+                body("category").isString().optional({ values: "null" }),
+                body("availability").isNumeric().optional({ values: "null" }),
                 productValidationMiddleware.productCodeExists,
                 productValidationMiddleware.productDiscontinued,
                 bodyValidationMiddleware.verifyBodyFieldsError,
                 Products.update
             )
             .delete(
-                mongodbValidationMiddleware.isMongoId,
                 productValidationMiddleware.productExists,
                 Products.remove
             )
@@ -49,8 +51,12 @@ export default class ProductRoutes extends CommonRoutesConfig {
                 body("code").isString().withMessage("Il campo code è obbligatorio e deve essere una stringa."),
                 body("description").isString().withMessage("Il campo description è obbligatorio e deve essere una stringa."),
                 body("um").default("nr").isString().isLength({ max: 2 }),
+                body("qta").default(0).isNumeric(),
                 body("price").default(0).isNumeric(),
                 body("discontinued").default(false).isBoolean(),
+                body("image").isURL().optional({ values: "null" }),
+                body("category").default("Varie").isString(),
+                body("availability").default(0).isNumeric(),
                 productValidationMiddleware.productCodeExists,
                 bodyValidationMiddleware.verifyBodyFieldsError,
                 Products.create
