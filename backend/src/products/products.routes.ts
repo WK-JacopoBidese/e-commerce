@@ -5,6 +5,7 @@ import { body } from "express-validator";
 import bodyValidationMiddleware from "../shared/middlewares/body.validation.middleware";
 import productValidationMiddleware from "./middlewares/product.validation.middleware";
 import mongodbValidationMiddleware from "../shared/middlewares/mongodb.validation.middleware";
+import authMiddleware from "../auth/middlewares/auth.middleware";
 
 export default class ProductRoutes extends CommonRoutesConfig {
     constructor(app: Application) {
@@ -13,6 +14,9 @@ export default class ProductRoutes extends CommonRoutesConfig {
 
     configureRoutes(): Application {
         this.app.route(this.apiPrefix + "/:id")
+            .all(
+                authMiddleware.verifyToken
+            )
             .get(
                 mongodbValidationMiddleware.isMongoId,
                 productValidationMiddleware.productExists,
@@ -38,6 +42,9 @@ export default class ProductRoutes extends CommonRoutesConfig {
             )
 
         this.app.route(this.apiPrefix)
+            .all(
+                authMiddleware.verifyToken
+            )
             .post(
                 body("code").isString().withMessage("Il campo code è obbligatorio e deve essere una stringa."),
                 body("description").isString().withMessage("Il campo description è obbligatorio e deve essere una stringa."),

@@ -6,6 +6,7 @@ import UserRoutes from "./users/users.routes";
 import { CommonRoutesConfig } from "./shared/classes/CommonRoutesConfig";
 import ProductRoutes from "./products/products.routes";
 import * as db from "./shared/db/db";
+import AuthRoutes from "./auth/auth.routes";
 
 dotenv.config();
 
@@ -21,8 +22,11 @@ app.use(helmet());
 
 db.connectDb();
 
+routes.push(new AuthRoutes(app));
 routes.push(new UserRoutes(app));
 routes.push(new ProductRoutes(app));
+
+app.all("*", (req, res) => res.status(404).json({ error: "Rotta non disponibile" }));
 
 app.listen(port, () => {
     console.log(`Il server è in ascolto sulla porta ${port}`);

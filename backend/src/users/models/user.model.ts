@@ -23,6 +23,15 @@ export async function findOne(id: string): Promise<any> {
     }
 }
 
+export async function findOneEmail(email: string): Promise<any> {
+    try {
+        const res = await User.findOne({email: email}).exec();
+        return res;
+    } catch (error) {
+        throw new Error(`Errore: ${error}`);
+    }
+}
+
 export async function create(userData: IUser): Promise<any> {
     const hashedPassword = await hashPassword(userData.password);
     const newUser: IUser = {
