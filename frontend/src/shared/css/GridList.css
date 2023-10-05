@@ -1,0 +1,54 @@
+.gridList {
+    width: 100vw;
+    height: 100vh;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 100px;
+}
+
+ul li {
+    padding: 16px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+}
+
+ul li .actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+ul li .actions a {
+    text-decoration: none;
+    color: currentColor;
+}
+
+.action-view,
+.action-delete {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.action-delete {
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+    color: red;
+    font-size: inherit;
+}
+
+.action-view:hover {
+    color: #bad455;
+}
+
+.action-delete:hover {
+    color: white;
+    background-color: red;
+}

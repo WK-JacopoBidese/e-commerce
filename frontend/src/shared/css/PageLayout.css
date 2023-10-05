@@ -1,0 +1,32 @@
+.page-title,
+.page-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+}
+
+.page-title a,
+.page-list a,
+.page-links a {
+    text-decoration: none;
+    color: currentColor;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.page-title a:hover,
+.page-list a:hover,
+.page-links a:hover {
+    color: white;
+    background-color: #bad455;
+}

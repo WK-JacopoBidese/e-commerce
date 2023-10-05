@@ -12,7 +12,7 @@ type OrderModel = Model<IOrder, {}, IOrderVirtuals>;
 const User = model<IUser>('users', userSchema);
 const Product = model<IProduct>('product', productSchema);
 
-const orderLineSchema = new Schema<IOrderLine, OrderLineModel, IOrderLineVirtuals>({
+export const orderLineSchema = new Schema<IOrderLine, OrderLineModel, IOrderLineVirtuals>({
     riga: { type: Number, default: 1, required: true },
     productId: { type: Schema.Types.ObjectId, ref: Product, required: true },
     qta: { type: Number, default: 1 },
@@ -25,7 +25,7 @@ orderLineSchema.virtual('totalOrderLine').get(function () {
     return this.qta * this.price;
 });
 
-const orderSchema = new Schema<IOrder, OrderModel, IOrderVirtuals>({
+export const orderSchema = new Schema<IOrder, OrderModel, IOrderVirtuals>({
     userId: { type: Schema.Types.ObjectId, ref: User, required: true },
     date: Date,
     state: { type: String, default: "created", enum: orderStates },
@@ -37,5 +37,3 @@ const orderSchema = new Schema<IOrder, OrderModel, IOrderVirtuals>({
 orderSchema.virtual('totalOrder').get(function () {
     return this.lines.reduce((accumulator, orderLine) => accumulator + (orderLine.qta * orderLine.price), 0);
 });
-
-export default orderSchema;

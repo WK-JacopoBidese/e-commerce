@@ -11,6 +11,16 @@ class OrderValidationMiddleware {
 
         next();
     }
+
+    async orderLineExists(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+        const orderLineExists = await findOne(req.params.id1);
+
+        if (!orderLineExists) {
+            return res.status(404).json({ error: `Ordine con ID ${req.params.id} non trovato.` });
+        }
+
+        next();
+    }
 }
 
 export default new OrderValidationMiddleware();

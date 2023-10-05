@@ -14,6 +14,19 @@ class MongoDBValidationMiddleware {
             return res.status(400).json({ error: `ID ${req.params.id} con formato non valido.` });
         }
     }
+
+    async isMongoIdSub(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+        try {
+            const mongoId = new Types.ObjectId(req.params.id1);
+            if (!mongoId) {
+                return res.status(400).json({ error: `ID ${req.params.id1} con formato non valido.` });
+            }
+
+            next();
+        } catch(error) {
+            return res.status(400).json({ error: `ID ${req.params.id1} con formato non valido.` });
+        }
+    }
 }
 
 export default new MongoDBValidationMiddleware();
